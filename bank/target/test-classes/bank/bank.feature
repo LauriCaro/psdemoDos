@@ -1,5 +1,10 @@
+@balance-check
 Feature: Feature Bank
 
+  Background:
+    Given my checking account has a balance of $500
+
+  @deposit
   Scenario Outline: Checking Account Balance after Deposit
     Given my checking account has a balance of $<balance>
     And I have recently made a deposit of $<deposit>
@@ -13,22 +18,16 @@ Feature: Feature Bank
       | 1000    | 200     | 1200            | 50  | 1150                     |
       | 300     | 500     | 800             | 30  | 770                      |
 
-  Scenario Outline: Checking Account Balance after Withdrawal
-    Given my checking account has a balance of $<balance>
-    And I have recently made a Withdrawal of $<withdrawal>
+ @withdrawal
+  Scenario: Checking Account Balance after Withdrawal
+    And I have recently made a Withdrawal of $100
     When I check my account balance
-    Then I should see $<expectedBalance> as the balance
-    But there is an credit interest of $<interest>
-    And the available balance should be $<expectedAvailableBalance>
-    Examples:
-      | balance | withdrawal | expectedBalance | interest | expectedAvailableBalance |
-      | 500     | 100        | 400             | 50       | 450                      |
+    Then I should see $400 as the balance
+    But there is an credit interest of $50
+    And the available balance should be $450
 
-  Scenario Outline: Checking Account Balance after Withdrawal In-Sufficient Balance
-    Given my checking account has a balance of $<balance>
-    When I request to withdraw $<withdrawal>
+   @in-sufficient-balance
+  Scenario: Checking Account Balance after Withdrawal In-Sufficient Balance
+    When I request to withdraw $700
     Then I should see and error
-    And the available balance should be $<expectedAvailableBalance>
-    Examples:
-      | balance | withdrawal | expectedAvailableBalance |
-      | 500     | 700        | 500                      |
+    And the available balance should be $500
