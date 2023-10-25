@@ -1,3 +1,4 @@
+@exampleBasic
 Feature: An example
 
   Scenario: Check balance for a valid account
